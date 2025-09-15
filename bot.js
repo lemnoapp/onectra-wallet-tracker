@@ -3,8 +3,8 @@ const HeliusWebSocketBackend = require('./websocket-backend');
 const fs = require('fs');
 const { botLogger, notificationLogger } = require('./utils/Logger');
 
-// Token del bot de Telegram
-const BOT_TOKEN = '8481266051:AAFEHifet3Ms5fXArYEWgh5yNNkoNnVDKbQ';
+// Token del bot de Telegram (secure)
+const BOT_TOKEN = process.env.BOT_TOKEN || '8481266051:AAFEHifet3Ms5fXArYEWgh5yNNkoNnVDKbQ';
 
 class ONECTRAWalletBot {
     constructor() {
@@ -20,10 +20,10 @@ class ONECTRAWalletBot {
         // Map para rastrear IDs de mensajes del bot para poder eliminarlos
         this.botMessageIds = new Map(); // telegramId -> Array(messageIds)
         
-        // Sistema de auto-limpieza por inactividad
+        // Sistema de auto-limpieza por inactividad (extendido para mejor UX)
         this.lastUserActivity = Date.now();
         this.inactivityTimeout = null;
-        this.INACTIVITY_LIMIT = 300000; // 5 minutos (300000 ms)
+        this.INACTIVITY_LIMIT = 1800000; // 30 minutos (1800000 ms) - más razonable
         
         // Límite de wallets por usuario
         this.MAX_WALLETS_PER_USER = 3;

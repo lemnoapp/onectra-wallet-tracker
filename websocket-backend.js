@@ -419,46 +419,26 @@ class HeliusWebSocketBackend {
         
         try {
             // Extracting token amounts from transaction
-            console.log('🔍 Enhanced TX type:', enhancedTx.type);
-            console.log('🔍 Token transfers count:', enhancedTx.tokenTransfers?.length || 0);
-            console.log('🔍 Native transfers count:', enhancedTx.nativeTransfers?.length || 0);
+            // Enhanced TX processing
             
             // 🎯 PASO 1: Procesar transferencias de tokens (incluyendo SOL como token)
             if (enhancedTx.tokenTransfers && enhancedTx.tokenTransfers.length > 0) {
                 enhancedTx.tokenTransfers.forEach((transfer, index) => {
-                    console.log(`\n📊 Transfer ${index + 1}:`);
-                    console.log('  📍 Mint:', transfer.mint);
-                    console.log('  📍 Raw Amount:', transfer.tokenAmount);
-                    console.log('  📍 From:', transfer.fromUserAccount?.substring(0, 8) + '...');
-                    console.log('  📍 To:', transfer.toUserAccount?.substring(0, 8) + '...');
-                    
                     // Verificar si es SOL
                     const isSOLTransfer = transfer.mint === 'So11111111111111111111111111111111111111112';
-                    console.log('  💰 Is SOL Transfer:', isSOLTransfer);
                     
                     if (transfer.tokenAmount && transfer.tokenAmount !== '0') {
-                        console.log('  ✅ Processing transfer with amount:', transfer.tokenAmount);
-                        
                         // Determinar BUY/SELL usando lógica del Chrome Extension
                         const isBuy = this.determineBuySell(transfer, enhancedTx);
                         let tradeType = isBuy ? 'BUY' : 'SELL';
                         
-                        // 🎯 CORRECCIÓN CRÍTICA PARA SOL (Chrome Extension Logic): 
-                        // La lógica automática está invertida para SOL vs tokens
+                        // Corrección crítica para SOL
                         if (isSOLTransfer) {
-                            // Si estamos viendo una transacción donde se venden tokens por SOL:
-                            // - El token sale de la wallet (SELL)
-                            // - El SOL entra a la wallet (pero debería mostrarse como SELL también)
-                            // La lógica automática ve "SOL entrando" y dice BUY, pero es incorrecto
                             tradeType = isBuy ? 'SELL' : 'BUY'; // Invertir la lógica para SOL
-                            console.log('  💰 SOL BUY/SELL logic corrected - was:', isBuy ? 'BUY' : 'SELL', 'now:', tradeType);
                         }
                         
-                        console.log('  📈 Trade Type:', tradeType);
-                        
-                        // Formatear amount usando función robusta del Chrome Extension
+                        // Formatear amount
                         const humanAmount = this.formatTokenAmount(transfer.tokenAmount, transfer.tokenStandard || 9);
-                        console.log('  📊 Human Amount:', humanAmount);
                         
                         // Calcular valor SOL si es SOL transfer
                         let solAmount = 0;
@@ -809,8 +789,8 @@ class HeliusWebSocketBackend {
                     return;
                 }
                 
-                // Paso 3: Obtener información de tokens
-                const assetInfoArray = await this.getAssetInfo(mintAddresses);
+                // Paso 3: Obtener información de tokens (optimizado - solo si es necesario)
+                const assetInfoArray = mintAddresses.length > 0 ? await this.getAssetInfo(mintAddresses) : [];
                 
                 // Paso 4: Extraer cantidades de tokens
                 const tokenAmounts = this.extractTokenAmounts(enhancedTx);
@@ -860,11 +840,10 @@ class HeliusWebSocketBackend {
                 
                 // Buscar transfers de SOL (nativeTransfers)
                 const solTransfers = tokenAmounts.filter(ta => ta.isSOL);
-                console.log('🔍 [DEBUG] SOL transfers found:', solTransfers.length);
+                    // Optimizado: procesamiento silencioso para mejorar velocidad
                 
                 // Obtener todas las wallets rastreadas como array para facilitar búsqueda
                 const trackedWalletsArray = Array.from(this.trackedWallets);
-                console.log('🔍 [DEBUG] Tracked wallets:', trackedWalletsArray.map(w => w.substring(0, 8) + '...'));
                 
                 let totalSOLAmount = 0;
                 let isUserBuying = false;

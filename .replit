@@ -1,6 +1,12 @@
 run = "npm install && node index.js"
 language = "nodejs"
 
+# Secure environment variables for production
+[env]
+BOT_TOKEN = ""
+LOG_LEVEL = "INFO"
+INACTIVITY_TIMEOUT = "1800000"
+
 [packager]
 language = "nodejs"
 
