@@ -2,6 +2,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const HeliusWebSocketBackend = require('./websocket-backend');
 const fs = require('fs');
 const { botLogger, notificationLogger } = require('./utils/Logger');
+const http = require('http');
 
 // Token del bot de Telegram
 const BOT_TOKEN = '8481266051:AAFEHifet3Ms5fXArYEWgh5yNNkoNnVDKbQ';
@@ -1689,3 +1690,19 @@ AI signals are provided for informational purposes only. Past performance does n
 // Crear e iniciar el bot
 const bot = new ONECTRAWalletBot();
 bot.start();
+
+// Simple HTTP server for Replit keep-alive
+const PORT = process.env.PORT || 3000;
+const server = http.createServer((req, res) => {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ 
+        status: 'alive', 
+        uptime: process.uptime(),
+        service: 'ONECTRA Wallet Bot',
+        timestamp: new Date().toISOString()
+    }));
+});
+
+server.listen(PORT, () => {
+    console.log(`🌐 HTTP server running on port ${PORT} for Replit keep-alive`);
+});

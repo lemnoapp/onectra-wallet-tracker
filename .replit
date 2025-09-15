@@ -1,20 +1,3 @@
-run = "node keep-alive.js"
+run = "npm start"
 language = "nodejs"
-entrypoint = "bot.js"
-
-[nix]
-channel = "stable-22_11"
-
-[env]
-NODE_ENV = "production"
-
-[deployment]
-run = ["sh", "-c", "npm install && npm start"]
-
-[packager]
-language = "nodejs"
-
-[packager.features]
-enabledForHosting = false
-guessImports = true
-packageSearch = true
+entrypoint = "index.js"

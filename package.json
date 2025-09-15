@@ -2,12 +2,10 @@
   "name": "onectra-wallet-bot",
   "version": "1.0.0",
   "description": "Advanced ONECTRA Telegram bot for tracking Solana wallet transactions with AI-powered signals",
-  "main": "bot.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node bot.js",
-    "dev": "node --watch bot.js",
-    "replit": "node bot.js",
-    "keep-alive": "node keep-alive.js"
+    "start": "node index.js",
+    "dev": "node bot.js"
   },
   "dependencies": {
     "axios": "^1.11.0",
