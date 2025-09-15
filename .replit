@@ -1,3 +1,4 @@
-run = "npm start"
-language = "nodejs"
-entrypoint = "index.js"
+entrypoint = "main.js"
+
+[interpreter]
+command = ["node", "main.js"]
