@@ -60,12 +60,33 @@ Advanced Telegram bot for real-time tracking of Solana wallet transactions with 
 
 ### Replit Deployment
 
-This project is configured for easy deployment on Replit:
+This project is properly configured for Replit hosting with keep-alive functionality:
 
-1. **Import to Replit**: Click "Import from GitHub" and use this repository URL
-2. **Configure Environment**: The included `.replit` and `replit.nix` files handle setup automatically
-3. **Update Bot Token**: Modify the `BOT_TOKEN` in `bot.js` with your token
-4. **Run**: Click the "Run" button in Replit
+1. **Import to Replit**: 
+   - Go to Replit.com and click "Create Repl"
+   - Choose "Import from GitHub"
+   - Use this repository URL: `https://github.com/onectra/onectra-wallet-bot`
+
+2. **Configure Bot Token**:
+   - Open `bot.js` in the Replit editor
+   - Replace the `BOT_TOKEN` constant with your actual Telegram bot token
+   - **Important**: Never commit your real token to the repository
+
+3. **Environment Setup**:
+   - The included `.replit` and `replit.nix` files handle all dependencies automatically
+   - Node.js 18.x, npm, and required tools will be installed
+
+4. **Deploy and Run**:
+   - Click the "Run" button in Replit
+   - The keep-alive server will start automatically on port 3000
+   - Your bot will be accessible and won't sleep due to inactivity
+   - Health check endpoint: `https://your-repl-name.your-username.repl.co/health`
+
+5. **Replit-Specific Features**:
+   - **Auto-restart**: Bot automatically restarts if it crashes
+   - **Keep-alive server**: Prevents Replit from sleeping your bot
+   - **Health monitoring**: Built-in health check endpoint
+   - **Process management**: Proper signal handling for clean shutdowns
 
 ## Usage
 
