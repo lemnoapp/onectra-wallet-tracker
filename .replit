@@ -1,0 +1,9 @@
+run = "node bot.js"
+language = "nodejs"
+entrypoint = "bot.js"
+
+[nix]
+channel = "stable-22_11"
+
+[deployment]
+run = ["sh", "-c", "node bot.js"]
