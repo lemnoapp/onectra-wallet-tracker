@@ -1,0 +1,9 @@
+run = "npm install && node index.js"
+language = "nodejs"
+
+[packager]
+language = "nodejs"
+
+[packager.features]
+packageSearch = true
+guessImports = true
